@@ -205,12 +205,29 @@ int inst_to_binary(
 		binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
 	} else if (is_opcode(opcode) == SLLI) {
 		/* Lab2-1 assignment */
+        //Try
+        //first doc line 25, need mod
+        binary = (0x01 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+        //need mod!!! SOS shamt stuff
+        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+
 		warn("Lab2-1 assignment: SLLI instruction\n");
 		exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == XORI) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: XORI instruction\n");
-		exit(EXIT_FAILURE);
+        //Done
+        binary = (0x04 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+
+        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+
+		//warn("Lab2-1 assignment: XORI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == SRLI) {
 		/*
 		 * Lab2-1 assignment
