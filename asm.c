@@ -10,7 +10,8 @@
 
 
 #include "asm.h"
-
+//trying with debug stuff
+#define DEBUG
 
 int reg_to_num(char *reg, int line_no) {
 	if (is_reg(reg) == MIS_MATCH)
@@ -212,10 +213,10 @@ int inst_to_binary(
         binary += (reg_to_num(arg1, line_no) << 7);
         binary += (reg_to_num(arg2, line_no) << 15);
         //need mod!!! SOS shamt stuff
-        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+        binary += (validate_imm(arg3, 12, line_no) << 20);
 
-		warn("Lab2-1 assignment: SLLI instruction\n");
-		exit(EXIT_FAILURE);
+		//warn("Lab2-1 assignment: SLLI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == XORI) {
 		/* Lab2-1 assignment */
         //Done
@@ -233,8 +234,21 @@ int inst_to_binary(
 		 * Lab2-1 assignment
 		 * tip: you may need the function `lower5bit`
 		 */
-		warn("Lab2-1 assignment: SRLI instruction\n");
-		exit(EXIT_FAILURE);
+
+        /* Lab2-1 assignment */
+        //Try
+        //first doc line 25, need mod
+        binary = (0x01 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+        //need mod!!! SOS shamt stuff
+        //binary += (validate_imm(arg3, 12, line_no) << 20);
+
+        binary += (lower5bit(arg3, line_no) << 20);
+
+		//warn("Lab2-1 assignment: SRLI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == SRAI) {
 		/*
 		 * Lab2-1 assignment
