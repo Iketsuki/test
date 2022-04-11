@@ -7,10 +7,10 @@
 # <args> is one of rd, rs1, rs2, rs3, imm20, imm12, imm12lo, imm12hi,
 # shamtw, shamt, rm
 
-beq     bimm12hi rs1 rs2 bimm12lo 14..12=0 6..2=0x18 1..0=3
-bne     bimm12hi rs1 rs2 bimm12lo 14..12=1 6..2=0x18 1..0=3
-blt     bimm12hi rs1 rs2 bimm12lo 14..12=4 6..2=0x18 1..0=3
-bge     bimm12hi rs1 rs2 bimm12lo 14..12=5 6..2=0x18 1..0=3
+beq     bimm12hi rs1 rs2 bimm12lo 14..12=0 6..2=0x18 1..0=3 1
+bne     bimm12hi rs1 rs2 bimm12lo 14..12=1 6..2=0x18 1..0=3 1
+blt     bimm12hi rs1 rs2 bimm12lo 14..12=4 6..2=0x18 1..0=3 1
+bge     bimm12hi rs1 rs2 bimm12lo 14..12=5 6..2=0x18 1..0=3 1
 bltu    bimm12hi rs1 rs2 bimm12lo 14..12=6 6..2=0x18 1..0=3
 bgeu    bimm12hi rs1 rs2 bimm12lo 14..12=7 6..2=0x18 1..0=3
 
