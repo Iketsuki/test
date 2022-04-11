@@ -207,10 +207,17 @@ int inst_to_binary(
 	}
     else if (is_opcode(opcode) == SLLI) {
 		/* Lab2-1 assignment */
+        //Try
+        //first doc line 25, need mod
         binary = (0x01 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
         binary += (reg_to_num(arg1, line_no) << 7);
         binary += (reg_to_num(arg2, line_no) << 15);
+        //need mod!!! SOS shamt stuff
+        //Edit: OK, so same is ok, just why
         binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+		//warn("Lab2-1 assignment: SLLI instruction\n");
+		//exit(EXIT_FAILURE);
 	}
     else if (is_opcode(opcode) == XORI) {
 		/* Lab2-1 assignment */
@@ -260,7 +267,13 @@ int inst_to_binary(
 		 * e.g., handle_label_or_imm(arg2, label_table, cmd_no, line_no)
 		 */
         binary = (0x0D << 2) + 0x03;
+        // doc 2: lui rd, imm
         binary += (reg_to_num(arg1, line_no) << 7); //slide
+        //copies the immediate value to the upper 20 bits of the destination
+        // register (rd).
+        // The lower 12 bits of the destination register is reset to zero.
+        //Interpretation: so its 1111 1111 1111 1111 1111 0000 0000 0000
+        // Question: or 0xFFFFF000 ??
         binary += handle_label_or_imm(arg2 ,label_table, cmd_no, line_no) & 0xFFFFF000;
 	}
 
