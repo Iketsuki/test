@@ -10,8 +10,7 @@
 
 
 #include "asm.h"
-// trying with debug stuff
-//#define DEBUG
+// #define DEBUG
 
 int reg_to_num(char *reg, int line_no) {
 	if (is_reg(reg) == MIS_MATCH)
