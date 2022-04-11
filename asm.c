@@ -1087,7 +1087,7 @@ void assemble(char *input_file_name, char *output_file_name) {
 			#ifdef DEBUG
 				unsigned int code = inst_to_binary(line_cnt, cmd_cnt, opcode, arg1,
 					arg2, arg3, label_table);
-				printf("[DEBUG] line: %s\tlLabel: %s\n", line, label);
+				printf("[DEBUG] line: %s\tlLabel: %s\n", line_cnt, label);
 				printf("        opcode: %s\tlArg1: %s\n", opcode, arg1);
 				printf("        arg2: %s\tlArg3: %s\n", arg2, arg3);
 				printf("        code: 0x%08x\n", code);
