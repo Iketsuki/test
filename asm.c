@@ -11,7 +11,7 @@
 
 #include "asm.h"
 //trying with debug stuff
-#define DEBUG
+//#define DEBUG
 
 int reg_to_num(char *reg, int line_no) {
 	if (is_reg(reg) == MIS_MATCH)
@@ -213,8 +213,8 @@ int inst_to_binary(
         binary += (reg_to_num(arg1, line_no) << 7);
         binary += (reg_to_num(arg2, line_no) << 15);
         //need mod!!! SOS shamt stuff
-        binary += (validate_imm(arg3, 12, line_no) << 20);
-
+        //Edit: OK, so same is ok, just why
+        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
 		//warn("Lab2-1 assignment: SLLI instruction\n");
 		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == XORI) {
@@ -224,7 +224,6 @@ int inst_to_binary(
         //doc 2019 ch.2 p18, same with ADDI
         binary += (reg_to_num(arg1, line_no) << 7);
         binary += (reg_to_num(arg2, line_no) << 15);
-
         binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
 
 		//warn("Lab2-1 assignment: XORI instruction\n");
@@ -238,13 +237,10 @@ int inst_to_binary(
         /* Lab2-1 assignment */
         //Try
         //first doc line 25, need mod
-        binary = (0x01 << 12) + (0x04 << 2) + 0x03;
+        binary = (0x05 << 12) + (0x04 << 2) + 0x03;
         //doc 2019 ch.2 p18, same with ADDI
         binary += (reg_to_num(arg1, line_no) << 7);
         binary += (reg_to_num(arg2, line_no) << 15);
-        //need mod!!! SOS shamt stuff
-        //binary += (validate_imm(arg3, 12, line_no) << 20);
-
         binary += (lower5bit(arg3, line_no) << 20);
 
 		//warn("Lab2-1 assignment: SRLI instruction\n");
@@ -254,24 +250,54 @@ int inst_to_binary(
 		 * Lab2-1 assignment
 		 * tip: you may need the function `lower5bit`
 		 */
-		warn("Lab2-1 assignment: SRAI instruction\n");
-		exit(EXIT_FAILURE);
+        //MOD first line is ok, from srli, but 26 - 31 is 16
+        //RMB: in Hex, 16 = 0x10
+        binary = (0x10 << 26) + (0x05 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+        binary += (lower5bit(arg3, line_no) << 20);
+		//warn("Lab2-1 assignment: SRAI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == ORI) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: ORI instruction\n");
-		exit(EXIT_FAILURE);
+        //MOD first line is ok
+        binary = (0x06 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+		//warn("Lab2-1 assignment: ORI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == ANDI) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: ADDI instruction\n");
-		exit(EXIT_FAILURE);
+        //MOD first line is ok
+        binary = (0x07 << 12) + (0x04 << 2) + 0x03;
+        //doc 2019 ch.2 p18, same with ADDI
+        binary += (reg_to_num(arg1, line_no) << 7);
+        binary += (reg_to_num(arg2, line_no) << 15);
+        binary += (MASK11_0(validate_imm(arg3, 12, line_no)) << 20);
+		//warn("Lab2-1 assignment: ADDI instruction\n");
+		//exit(EXIT_FAILURE);
 	} else if (is_opcode(opcode) == LUI) {
 		/*
 		 * Lab2-1 assignment
 		 * tip: you may need the function `handle_label_or_imm`
 		 * e.g., handle_label_or_imm(arg2, label_table, cmd_no, line_no)
 		 */
-		warn("Lab2-1 assignment: LUI instruction\n");
-		exit(EXIT_FAILURE);
+        binary = (0x0D << 2) + 0x03;
+        // doc 2: lui rd, imm
+        binary += (reg_to_num(arg1, line_no) << 7); //slide
+        //copies the immediate value to the upper 20 bits of the destination
+        // register (rd).
+        // The lower 12 bits of the destination register is reset to zero.
+        //Interpretation: so its 1111 1111 1111 1111 1111 0000 0000 0000
+        // Question: or 0xFFFFF000 ??
+        binary += handle_label_or_imm(arg2 ,label_table, cmd_no, line_no) &
+                11111111111111111111000000000000;
+
+		//warn("Lab2-1 assignment: LUI instruction\n");
+		//exit(EXIT_FAILURE);
 	}
 
 	// Integer Register-Register Operations
