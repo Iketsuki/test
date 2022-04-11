@@ -11,7 +11,7 @@
 
 #include "asm.h"
 // trying with debug stuff
-#define DEBUG
+//#define DEBUG
 
 int reg_to_num(char *reg, int line_no) {
 	if (is_reg(reg) == MIS_MATCH)
@@ -532,11 +532,11 @@ int inst_to_binary(
         binary += (reg_to_num(ret->reg, line_no) << 15);
 
         // imm[4:0] 0000 0001 1111
-        binary += (ret->imm & 0x1F << (7 - 0));
-        printf("SB 1 Now is: 0x%08x\n", binary);
+        binary += ((ret->imm & 0x1F) << (7 - 0));
+        //printf("SB 1 Now is: 0x%08x\n", binary);
         // imm[11:5] 1111 1110 0000
-        binary += (ret->imm & 0xFE0 << (25 - 5));
-        printf("SB 2Now is: 0x%08x\n", binary);
+        binary += ((ret->imm & 0xFE0) << (25 - 5));
+        //printf("SB 2Now is: 0x%08x\n", binary);
 		//warn("Lab2-1 assignment: SB instruction\n");
 		//exit(EXIT_FAILURE);
 	}
@@ -562,11 +562,11 @@ int inst_to_binary(
         struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
         binary += (reg_to_num(ret->reg, line_no) << 15);
         // imm[4:0] 0000 0001 1111
-        binary += (ret->imm & 0x1F << (7 - 0));
-        printf("SW 1 Now is: 0x%08x\n", binary);
+        binary += ((ret->imm & 0x1F) << (7 - 0));
+        //printf("SW 1 Now is: 0x%08x\n", binary);
         // imm[11:5] 1111 1110 0000
-        binary += (ret->imm & 0xFE0 << (25 - 5));
-        printf("SW 2 Now is: 0x%08x\n", binary);
+        binary += ((ret->imm & 0xFE0) << (25 - 5));
+        //printf("SW 2 Now is: 0x%08x\n", binary);
 		//warn("Lab2-1 assignment: SW instruction\n");
 		//exit(EXIT_FAILURE);
 	}
