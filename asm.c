@@ -300,8 +300,7 @@ int inst_to_binary(
         // The lower 12 bits of the destination register is reset to zero.
         //Interpretation: so its 1111 1111 1111 1111 1111 0000 0000 0000
         // Question: or 0xFFFFF000 ??
-        binary += handle_label_or_imm(arg2 ,label_table, cmd_no, line_no) &
-                11111111111111111111000000000000;
+        binary += handle_label_or_imm(arg2 ,label_table, cmd_no, line_no) & 0xFFFFF000;
 
 		//warn("Lab2-1 assignment: LUI instruction\n");
 		//exit(EXIT_FAILURE);
@@ -503,26 +502,69 @@ int inst_to_binary(
 		struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
 		binary += (reg_to_num(ret->reg, line_no) << 15);
 		binary += (ret->imm << 20);
-	} else if (is_opcode(opcode) == LH) {
+	}
+    else if (is_opcode(opcode) == LH) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: LH instruction\n");
-		exit(EXIT_FAILURE);
-	} else if (is_opcode(opcode) == LW) {
+        binary = (0x01 << 12) + 0x03;
+        binary += (reg_to_num(arg1, line_no) << 7);
+        struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
+        binary += (reg_to_num(ret->reg, line_no) << 15);
+        binary += (ret->imm << 20);
+		//warn("Lab2-1 assignment: LH instruction\n");
+		//exit(EXIT_FAILURE);
+	}
+    else if (is_opcode(opcode) == LW) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: LW instruction\n");
-		exit(EXIT_FAILURE);
-	} else if (is_opcode(opcode) == SB) {
+        binary = (0x02 << 12) + 0x03;
+        binary += (reg_to_num(arg1, line_no) << 7);
+        struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
+        binary += (reg_to_num(ret->reg, line_no) << 15);
+        binary += (ret->imm << 20);
+		//warn("Lab2-1 assignment: LW instruction\n");
+		//exit(EXIT_FAILURE);
+	}
+    else if (is_opcode(opcode) == SB) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: SB instruction\n");
-		exit(EXIT_FAILURE);
-	} else if (is_opcode(opcode) == SH) {
+        binary = (0x08 << 2) + 0x03;
+        // RMB: save load inverse
+        binary += (reg_to_num(arg1, line_no) << 20);
+        struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
+        binary += (reg_to_num(ret->reg, line_no) << 15);
+        // imm[4:0] 0000 0001 1111
+        binary += (ret->imm & 0x1F << (7 - 0));
+        // imm[11:5] 1111 1110 0000
+        binary += (ret->imm & 0xFE0 << (25 - 5));
+
+		//warn("Lab2-1 assignment: SB instruction\n");
+		//exit(EXIT_FAILURE);
+	}
+    else if (is_opcode(opcode) == SH) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: SH instruction\n");
-		exit(EXIT_FAILURE);
-	} else if (is_opcode(opcode) == SW) {
+        binary = (0x01 << 12) + (0x08 << 2) + 0x03;
+        // RMB: save load inverse
+        binary += (reg_to_num(arg1, line_no) << 20);
+        struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
+        binary += (reg_to_num(ret->reg, line_no) << 15);
+        // imm[4:0] 0000 0001 1111
+        binary += (ret->imm & 0x1F << (7 - 0));
+        // imm[11:5] 1111 1110 0000
+        binary += (ret->imm & 0xFE0 << (25 - 5));
+		//warn("Lab2-1 assignment: SH instruction\n");
+		//exit(EXIT_FAILURE);
+	}
+    else if (is_opcode(opcode) == SW) {
 		/* Lab2-1 assignment */
-		warn("Lab2-1 assignment: SW instruction\n");
-		exit(EXIT_FAILURE);
+        binary = (0x02 << 12) + (0x08 << 2) + 0x03;
+        // RMB: save load inverse
+        binary += (reg_to_num(arg1, line_no) << 20);
+        struct_regs_indirect_addr* ret = parse_regs_indirect_addr(arg2, line_no);
+        binary += (reg_to_num(ret->reg, line_no) << 15);
+        // imm[4:0] 0000 0001 1111
+        binary += (ret->imm & 0x1F << (7 - 0));
+        // imm[11:5] 1111 1110 0000
+        binary += (ret->imm & 0xFE0 << (25 - 5));
+		//warn("Lab2-1 assignment: SW instruction\n");
+		//exit(EXIT_FAILURE);
 	}
 	return binary;
 }
