@@ -1,0 +1,208 @@
+Writing result to output file count10.bin
+[DEBUG] line: 2 lLabel:
+        opcode: la      lArg1: t0
+        arg2: ten       lArg3:
+        code: 0x00000000
+[DEBUG] line: 3 lLabel:
+        opcode: lw      lArg1: t1
+        arg2: 0(t0)     lArg3:
+        code: 0x0002a303
+[DEBUG] line: 4 lLabel:
+        opcode: add     lArg1: t2
+        arg2: zero      lArg3: zero
+        code: 0x000003b3
+[DEBUG] line: 5 lLabel: loop
+        opcode: add     lArg1: t2
+        arg2: t2        lArg3: t1
+        code: 0x006383b3
+[DEBUG] line: 6 lLabel:
+        opcode: addi    lArg1: t1
+        arg2: t1        lArg3: -1
+        code: 0xfff30313
+[DEBUG] line: 7 lLabel:
+        opcode: bne     lArg1: t1
+        arg2: zero      lArg3: loop
+        code: 0x00031863
+[DEBUG] line: 8 lLabel:
+        opcode: halt    lArg1:
+        arg2:   lArg3:
+        code: 0x00000000
+[DEBUG] line: 10        lLabel: ten
+        opcode: .fill   lArg1: 10
+        arg2:   lArg3:
+        code: 0x00000000
+tools/../benchmarks/swap.asm
+Processing input file tools/../benchmarks/swap.asm
+Writing result to output file swap.bin
+[DEBUG] line: 3 lLabel:
+        opcode: la      lArg1: t0
+        arg2: num1      lArg3:
+        code: 0x00000000
+[DEBUG] line: 4 lLabel:
+        opcode: lw      lArg1: t0
+        arg2: 0(t0)     lArg3:
+        code: 0x0002a283
+[DEBUG] line: 6 lLabel:
+        opcode: la      lArg1: t1
+        arg2: num2      lArg3:
+        code: 0x00000000
+[DEBUG] line: 7 lLabel:
+        opcode: lw      lArg1: t1
+        arg2: 0(t1)     lArg3:
+        code: 0x00032303
+[DEBUG] line: 9 lLabel:
+        opcode: la      lArg1: t2
+        arg2: num1      lArg3:
+        code: 0x00000000
+[DEBUG] line: 10        lLabel:
+        opcode: la      lArg1: t3
+        arg2: num2      lArg3:
+        code: 0x00000000
+[DEBUG] line: 12        lLabel:
+        opcode: sw      lArg1: t0
+        arg2: 0(t3)     lArg3:
+        code: 0x005e2023
+[DEBUG] line: 13        lLabel:
+        opcode: sw      lArg1: t1
+        arg2: 0(t2)     lArg3:
+        code: 0x0063a023
+[DEBUG] line: 15        lLabel:
+        opcode: halt    lArg1:
+        arg2:   lArg3:
+        code: 0x00000000
+[DEBUG] line: 17        lLabel: num1
+        opcode: .fill   lArg1: 0xabcd
+        arg2:   lArg3:
+        code: 0x00000000
+[DEBUG] line: 18        lLabel: num2
+        opcode: .fill   lArg1: 0x1234
+        arg2:   lArg3:
+        code: 0x00000000
+tools/../benchmarks/isa.asm
+Processing input file tools/../benchmarks/isa.asm
+Writing result to output file isa.bin
+[DEBUG] line: 0 lLabel:
+        opcode: la      lArg1: a0
+        arg2: al        lArg3:
+        code: 0x00000000
+[DEBUG] line: 1 lLabel:
+        opcode: lw      lArg1: a0
+        arg2: 0(a0)     lArg3:
+        code: 0x00052503
+[DEBUG] line: 2 lLabel:
+        opcode: blt     lArg1: a0
+        arg2: zero      lArg3: l1
+        code: 0x00054863
+[DEBUG] line: 3 lLabel: l1
+        opcode: addi    lArg1: a7
+        arg2: a0        lArg3: 13
+        code: 0x00d50893
+[DEBUG] line: 4 lLabel:
+        opcode: bge     lArg1: zero
+        arg2: a7        lArg3: l1
+        code: 0x01105863
+[DEBUG] line: 5 lLabel:
+        opcode: la      lArg1: a0
+        arg2: al        lArg3:
+        code: 0x00000000
+[DEBUG] line: 6 lLabel:
+        opcode: lb      lArg1: a1
+        arg2: 1(a0)     lArg3:
+        code: 0x00150583
+[DEBUG] line: 7 lLabel:
+        opcode: xori    lArg1: a2
+        arg2: a1        lArg3: 0x7ff
+        code: 0x7ff5c613
+[DEBUG] line: 8 lLabel:
+        opcode: lw      lArg1: a0
+        arg2: 0(a0)     lArg3:
+        code: 0x00052503
+[DEBUG] line: 9 lLabel:
+        opcode: add     lArg1: a3
+        arg2: a2        lArg3: a0
+        code: 0x00a606b3
+[DEBUG] line: 10        lLabel:
+        opcode: add     lArg1: a4
+        arg2: a2        lArg3: a0
+        code: 0x00a60733
+[DEBUG] line: 11        lLabel:
+        opcode: addi    lArg1: a5
+        arg2: a7        lArg3: -1
+        code: 0xfff88793
+[DEBUG] line: 12        lLabel:
+        opcode: jal     lArg1: zero
+        arg2: l2        lArg3:
+        code: 0x0440006f
+[DEBUG] line: 13        lLabel: l3
+        opcode: jal     lArg1: ra
+        arg2: l4        lArg3:
+        code: 0x048000ef
+[DEBUG] line: 14        lLabel:
+        opcode: jal     lArg1: zero
+        arg2: l5        lArg3:
+        code: 0x0500006f
+[DEBUG] line: 15        lLabel: l2
+        opcode: jal     lArg1: zero
+        arg2: l3        lArg3:
+        code: 0x03c0006f
+[DEBUG] line: 16        lLabel: l4
+        opcode: sub     lArg1: a6
+        arg2: a7        lArg3: a0
+        code: 0x40a88833
+[DEBUG] line: 17        lLabel:
+        opcode: jalr    lArg1: zero
+        arg2: 0(ra)     lArg3:
+        code: 0x00008067
+[DEBUG] line: 18        lLabel: l5
+        opcode: slli    lArg1: a7
+        arg2: a6        lArg3: 3
+        code: 0x00381893
+[DEBUG] line: 19        lLabel:
+        opcode: srli    lArg1: a3
+        arg2: a7        lArg3: 2
+        code: 0x0028d693
+[DEBUG] line: 20        lLabel:
+        opcode: sub     lArg1: a3
+        arg2: zero      lArg3: a3
+        code: 0x40d006b3
+[DEBUG] line: 21        lLabel:
+        opcode: srai    lArg1: a4
+        arg2: a3        lArg3: 2
+        code: 0x4026d713
+[DEBUG] line: 22        lLabel:
+        opcode: xori    lArg1: a3
+        arg2: a3        lArg3: 0xf
+        code: 0x00f6c693
+[DEBUG] line: 23        lLabel:
+        opcode: sub     lArg1: a3
+        arg2: zero      lArg3: a3
+        code: 0x40d006b3
+[DEBUG] line: 24        lLabel:
+        opcode: la      lArg1: s1
+        arg2: bl        lArg3:
+        code: 0x00000000
+[DEBUG] line: 25        lLabel:
+        opcode: sb      lArg1: a3
+        arg2: 8(s1)     lArg3:
+        code: 0x00d48423
+[DEBUG] line: 26        lLabel:
+        opcode: xor     lArg1: a3
+        arg2: a3        lArg3: a4
+        code: 0x00e6c6b3
+[DEBUG] line: 27        lLabel:
+        opcode: sw      lArg1: a3
+        arg2: 16(s1)    lArg3:
+        code: 0x00d4a823
+[DEBUG] line: 28        lLabel:
+        opcode: halt    lArg1:
+        arg2:   lArg3:
+        code: 0x00000000
+[DEBUG] line: 30        lLabel: al
+        opcode: .fill   lArg1: -2
+        arg2:   lArg3:
+        code: 0x00000000
+[DEBUG] line: 31        lLabel: bl
+        opcode: .fill   lArg1: -9
+        arg2:   lArg3:
+        code: 0x00000000
+[INFO]: You have passed the Lab.
