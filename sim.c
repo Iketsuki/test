@@ -541,10 +541,9 @@ void handle_sh(unsigned int cur_inst) {
 
     // width 16
     int w = 16;
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] = 0;
     for(int i = 0; i < w / 8; i++){
-        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] +=
-                (MASK7_0(CURRENT_LATCHES.REGS[rs2]) >> 8);
+        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] =
+                (MASK7_0(CURRENT_LATCHES.REGS[rs2] >> 8 * i));
     }
 }
 
@@ -562,10 +561,9 @@ void handle_sw(unsigned int cur_inst) {
      */
     // width 32
     int w = 32;
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] = 0;
     for(int i = 0; i < w / 8; i++){
-        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] +=
-                (MASK7_0(CURRENT_LATCHES.REGS[rs2]) >> 8);
+        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] =
+                (MASK7_0(CURRENT_LATCHES.REGS[rs2] >> 8 * i));
     }
 }
 
