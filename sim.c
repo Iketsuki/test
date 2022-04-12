@@ -322,7 +322,7 @@ void handle_andi(unsigned int cur_inst) {
     int imm12 = sext(MASK31_20(cur_inst), 12);
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] & imm12;
 }
-// TODO: LA LUI, check again
+// T: LA LUI, check again
 void handle_lui(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst);
     // int imm20 = sext(MASK31_12(cur_inst), 20);
@@ -407,7 +407,7 @@ void handle_jalr(unsigned int cur_inst) {
     NEXT_LATCHES.PC = CURRENT_LATCHES.REGS[rs1] + imm12;
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.PC + 4;
     //NEXT_LATCHES.REGS[rd] = (CURRENT_LATCHES.PC & 0xFFFFFFFE) + 4;
-    //Td: review jalr
+    //T: review jalr
 
     /* Question: why + 4
      * rd 設為pc 的值設為原本的 pc+4，然後將 pc 的值設為 rs1+imm
@@ -491,7 +491,7 @@ void handle_lh(unsigned int cur_inst) {
     int imm12 = MASK31_20(cur_inst);
     NEXT_LATCHES.REGS[rd] = sext(MASK15_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
 }
-// TODO: LW check again
+// T: LW check again
 // 4 char?
 // assign four chars?
 
