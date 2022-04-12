@@ -300,13 +300,10 @@ void handle_srai(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int shamt = sext(MASK24_20(cur_inst), 5);
     //Question: handle sign bit!
-    for(int i = 0; i < shamt; i++){
-        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0)){
-            NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
-            NEXT_LATCHES.REGS[rd] += (1 << 31);
-        }
-        else{
-            NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> shamt;
+    if((MASK31(CURRENT_LATCHES.REGS[rs1]))){
+        for(int i = 0; i < shamt; i++){
+            NEXT_LATCHES.REGS[rd] | (1 << 31 - i);
         }
     }
 }

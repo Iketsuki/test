@@ -18,8 +18,8 @@ L4  sub a6, a7, a0     # cycle = 203, a6 = 13 / 0x0000000d, addr = 0x00000048 18
     jalr zero, 0(ra)   # cycle = 213, addr = 0x0000004c
 L5  slli a7, a6, 3     # cycle = 235, a7 = 52 / 0x00000068, addr = 0x00000050 21
     srli a3, a7, 2     # cycle = 245, a3 = 26 / 0x0000001a, addr = 0x00000054 22
-	sub a3, zero, a3   # cycle = 255, a3 = -26 / 0xffffffe6, addr = 0x00000058 23
-    srai a4, a3, 2     # cycle = 265, a4 = -7 / 0xfffffff9, addr = 0x0000005c 24 err
+	sub a3, zero, a3   # cycle = 255, a3 = -26 / 0xffffffe6, addr = 0x00000058 23     e6 11100110
+    srai a4, a3, 2     # cycle = 265, a4 = -7 / 0xfffffff9, addr = 0x0000005c 24 err  f3 11110011 corr-> f9 11111001
     xori a3, a3, 0xF   # cycle = 275, a3 = -23 / 0xffffffe9, addr = 0x00000060 25
 	sub a3, zero, a3   # cycle = 285, a3 = 23 / 0x00000017, addr = 0x00000064 26
 	la s1, BL          # cycle = 295 / 305, addr = 0x00000068
