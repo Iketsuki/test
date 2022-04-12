@@ -10,7 +10,7 @@
 
 
 #include "sim.h"
-//#define DEBUG
+#define DEBUG
 
 void help() {
     printf("--------------------- RISCV LC SIM Help ----------------------\n");
@@ -172,8 +172,26 @@ void get_command(FILE *dumpsim_file) {
             else {
                 scanf("%d", &cycles);
                 run(cycles);
+                #ifdef DEBUG
+                    rdump(dumpsim_file);
+                #endif
             }
             break;
+        #ifdef DEBUG
+        case 'l':
+            if (RUN_BIT == false) {
+                error("RISCV LC cannot simulate, and the simulator is halted.\n\n");
+                return;
+            }
+
+            info("simulating...\n\n");
+            while (CURRENT_LATCHES.PC != TRAPVEC_BASE_ADDR){
+                cycle();
+                rdump(dumpsim_file);
+            }
+            RUN_BIT = false;
+            info("RISCV LC is halted.\n\n");
+        #endif
         default:
             printf("invalid command\n");
             break;
