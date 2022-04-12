@@ -569,9 +569,9 @@ void handle_sw(unsigned int cur_inst) {
     MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 1] =
             MASK15_8(CURRENT_LATCHES.REGS[rs2]);
     MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 2] =
-            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
+            MASK23_16(CURRENT_LATCHES.REGS[rs2]);
     MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 3] =
-            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
+            MASK31_24(CURRENT_LATCHES.REGS[rs2]);
 }
 
 
