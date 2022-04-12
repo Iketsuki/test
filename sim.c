@@ -308,7 +308,7 @@ void handle_andi(unsigned int cur_inst) {
 void handle_lui(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst);
     int imm20 = sext(MASK31_12(cur_inst), 20);
-    NEXT_LATCHES.REGS[rd] = imm20 << 12;
+    NEXT_LATCHES.REGS[rd] = imm20;
 }
 
 // L2-2 Integer Register-Register Operations
