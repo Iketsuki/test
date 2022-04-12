@@ -383,9 +383,12 @@ void handle_and(unsigned int cur_inst) {
 void handle_jalr(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = sext(MASK31_20(cur_inst), 12);
-    NEXT_LATCHES.PC = imm12;
+    NEXT_LATCHES.PC = CURRENT_LATCHES.REGS[rs1] + imm12;
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.PC + 4;
-    // Question: why + 4
+    /* Question: why + 4
+     * rd 設為pc 的值設為原本的 pc+4，然後將 pc 的值設為 rs1+imm
+     * https://ithelp.ithome.com.tw/articles/10194907
+     */
 }
 
 // given?
