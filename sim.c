@@ -400,10 +400,9 @@ void handle_and(unsigned int cur_inst) {
 void handle_jalr(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = sext(MASK31_20(cur_inst), 12);
-    //currentpc?
+    //current pc?
     NEXT_LATCHES.PC = CURRENT_LATCHES.REGS[rs1] + imm12;
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.PC + 4;
-    //NEXT_LATCHES.REGS[rd] = (CURRENT_LATCHES.PC & 0xFFFFFFFE) + 4;
     //T: review jalr
 
     /* Question: why + 4
@@ -539,12 +538,14 @@ void handle_sh(unsigned int cur_inst) {
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    // width
 
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] =
-            MASK7_0(CURRENT_LATCHES.REGS[rs2]);
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 1] =
-            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
+    // width 16
+    int w = 16;
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] = 0;
+    for(int i = 0; i < w / 8; i++){
+        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] +=
+                (MASK7_0(CURRENT_LATCHES.REGS[rs2]) >> 8);
+    }
 }
 
 
@@ -559,16 +560,13 @@ void handle_sw(unsigned int cur_inst) {
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    // width
-
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] =
-            MASK7_0(CURRENT_LATCHES.REGS[rs2]);
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 1] =
-            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 2] =
-            MASK23_16(CURRENT_LATCHES.REGS[rs2]);
-    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 3] =
-            MASK31_24(CURRENT_LATCHES.REGS[rs2]);
+    // width 32
+    int w = 32;
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] = 0;
+    for(int i = 0; i < w / 8; i++){
+        MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + i] +=
+                (MASK7_0(CURRENT_LATCHES.REGS[rs2]) >> 8);
+    }
 }
 
 
