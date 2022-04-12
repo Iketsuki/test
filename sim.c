@@ -489,7 +489,12 @@ void handle_lb(unsigned int cur_inst) {
 void handle_lh(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    NEXT_LATCHES.REGS[rd] = sext(MASK15_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
+    // width
+    int w = 16;
+    NEXT_LATCHES.REGS[rd] = 0;
+    for(int i = 0; i < w / 8; i++){
+        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), w) << (8 * i);
+    }
 }
 // T: LW check again
 // 4 char?
@@ -498,7 +503,12 @@ void handle_lh(unsigned int cur_inst) {
 void handle_lw(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    NEXT_LATCHES.REGS[rd] = sext(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]], 32);
+    // width
+    int w = 16;
+    NEXT_LATCHES.REGS[rd] = 0;
+    for(int i = 0; i < w / 8; i++){
+        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), w) << (8 * i);
+    }
 }
 
 // Save
@@ -507,11 +517,13 @@ void handle_sb(unsigned int cur_inst) {
     //get offset
     int imm12 = (MASK31_25(cur_inst) << 5) + \
         (MASK11_7(cur_inst));
+    imm12 = sext(imm12, 12);
     /* eg sb x1, 0(x5)
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK7_0(CURRENT_LATCHES.REGS[rs2]), 8);
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] =
+            MASK7_0(CURRENT_LATCHES.REGS[rs2]);
 }
 
 
@@ -520,11 +532,18 @@ void handle_sh(unsigned int cur_inst) {
     //get offset
     int imm12 = (MASK31_25(cur_inst) << 5) + \
         (MASK11_7(cur_inst));
+    imm12 = sext(imm12, 12);
+
     /* eg sb x1, 0(x5)
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK15_0(CURRENT_LATCHES.REGS[rs2]), 16);
+    // width
+
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] =
+            MASK7_0(CURRENT_LATCHES.REGS[rs2]);
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 1] =
+            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
 }
 
 
@@ -533,11 +552,22 @@ void handle_sw(unsigned int cur_inst) {
     //get offset
     int imm12 = (MASK31_25(cur_inst) << 5) + \
         (MASK11_7(cur_inst));
+    imm12 = sext(imm12, 12);
+
     /* eg sb x1, 0(x5)
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(CURRENT_LATCHES.REGS[rs2], 32);
+    // width
+
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1]] =
+            MASK7_0(CURRENT_LATCHES.REGS[rs2]);
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 1] =
+            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 2] =
+            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
+    MEMORY[imm12 + CURRENT_LATCHES.REGS[rs1] + 3] =
+            MASK15_8(CURRENT_LATCHES.REGS[rs2]);
 }
 
 
