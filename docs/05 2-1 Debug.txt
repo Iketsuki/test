@@ -31,6 +31,7 @@ Writing result to output file count10.bin
         opcode: .fill   lArg1: 10
         arg2:   lArg3:
         code: 0x00000000
+
 tools/../benchmarks/swap.asm
 Processing input file tools/../benchmarks/swap.asm
 Writing result to output file swap.bin
@@ -78,6 +79,7 @@ Writing result to output file swap.bin
         opcode: .fill   lArg1: 0x1234
         arg2:   lArg3:
         code: 0x00000000
+
 tools/../benchmarks/isa.asm
 Processing input file tools/../benchmarks/isa.asm
 Writing result to output file isa.bin
