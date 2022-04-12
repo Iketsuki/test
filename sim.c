@@ -10,7 +10,7 @@
 
 
 #include "sim.h"
-#define DEBUG
+//#define DEBUG
 
 void help() {
     printf("--------------------- RISCV LC SIM Help ----------------------\n");
@@ -461,40 +461,52 @@ void handle_lb(unsigned int cur_inst) {
 void handle_lh(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
+    NEXT_LATCHES.REGS[rd] = sext(MASK15_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
 }
 
 void handle_lw(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 32);
+    NEXT_LATCHES.REGS[rd] = sext(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]], 32);
 }
 
 // Save
 void handle_sb(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    //get offset
+    int imm12 = (MASK31_25(cur_inst) << 5) + \
+        (MASK11_7(cur_inst));
+    /* eg sb x1, 0(x5)
+     * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
+     * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    warn("Lab2-2 assignment: SB\n");
-    exit(EXIT_FAILURE);
+    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK7_0(CURRENT_LATCHES.REGS[rs2]), 8);
 }
 
 
 void handle_sh(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    //get offset
+    int imm12 = (MASK31_25(cur_inst) << 5) + \
+        (MASK11_7(cur_inst));
+    /* eg sb x1, 0(x5)
+     * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
+     * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    warn("Lab2-2 assignment: SH\n");
-    exit(EXIT_FAILURE);
+    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK15_0(CURRENT_LATCHES.REGS[rs2]), 8);
 }
 
 
 void handle_sw(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    //get offset
+    int imm12 = (MASK31_25(cur_inst) << 5) + \
+        (MASK11_7(cur_inst));
+    /* eg sb x1, 0(x5)
+     * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
+     * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    warn("Lab2-2 assignment: SW\n");
-    exit(EXIT_FAILURE);
+    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK7_0(CURRENT_LATCHES.REGS[rs2]), 8);
 }
 
 
