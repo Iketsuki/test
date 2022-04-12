@@ -450,30 +450,27 @@ void handle_bge(unsigned int cur_inst) {
 
 // 2-2 Load and Store Instructions
 // given?
+// Load
 void handle_lb(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
     NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 8);
 }
 
-
+// Question: only mod width?
 void handle_lh(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: LH\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
+    int imm12 = MASK31_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
 }
 
 void handle_lw(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: LW\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
+    int imm12 = MASK31_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 32);
 }
 
-
+// Save
 void handle_sb(unsigned int cur_inst) {
     /*
      * Lab2-2 assignment
