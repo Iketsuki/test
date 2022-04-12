@@ -496,7 +496,7 @@ void handle_sh(unsigned int cur_inst) {
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK15_0(CURRENT_LATCHES.REGS[rs2]), 8);
+    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK15_0(CURRENT_LATCHES.REGS[rs2]), 16);
 }
 
 
@@ -509,7 +509,7 @@ void handle_sw(unsigned int cur_inst) {
      * save x1 (rs2) into x5 (rs1) value with offset 0 (imm12)
      * Here naming is different from opcodes-rv32i, but same with risc-v-asm-manual p33
      */
-    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(MASK7_0(CURRENT_LATCHES.REGS[rs2]), 8);
+    MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]] = sext(CURRENT_LATCHES.REGS[rs2], 32);
 }
 
 
