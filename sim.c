@@ -489,7 +489,7 @@ void handle_lb(unsigned int cur_inst) {
 void handle_lh(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    // width
+    // width 16
     int w = 16;
     NEXT_LATCHES.REGS[rd] = 0;
     for(int i = 0; i < w / 8; i++){
@@ -503,8 +503,8 @@ void handle_lh(unsigned int cur_inst) {
 void handle_lw(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
-    // width
-    int w = 16;
+    // width 32
+    int w = 32;
     NEXT_LATCHES.REGS[rd] = 0;
     for(int i = 0; i < w / 8; i++){
         NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), w) << (8 * i);
