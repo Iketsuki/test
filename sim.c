@@ -22,14 +22,12 @@ void help() {
     printf("quit           -  exit the simulator                        \n\n");
 }
 
-
 void init_memory() {
     int i;
 
     for (i = 0; i < BYTES_IN_MEM; i++)
         MEMORY[i] = 0;
 }
-
 
 void load_program(char *program_filename) {
     FILE *prog;
@@ -68,7 +66,6 @@ void load_program(char *program_filename) {
     info("read %d words (%d bytes) from program into memory.\n\n", i, i << 2);
 }
 
-
 void initialize(char *program_filename, int num_prog_files) {
     int i;
 
@@ -81,7 +78,6 @@ void initialize(char *program_filename, int num_prog_files) {
 
     RUN_BIT = true;
 }
-
 
 void mdump(FILE *dumpsim_file, int start, int stop) {
 	/* this is a byte address */
@@ -118,7 +114,6 @@ void mdump(FILE *dumpsim_file, int start, int stop) {
     fprintf(dumpsim_file, "\n");
 }
 
-
 void rdump(FILE *dumpsim_file) {
     int k;
 
@@ -141,7 +136,6 @@ void rdump(FILE *dumpsim_file) {
         fprintf(dumpsim_file, "%s\t[x%d]:\t0x%04x\n", regs[k], k, CURRENT_LATCHES.REGS[k]);
     fprintf(dumpsim_file, "\n");
 }
-
 
 void get_command(FILE *dumpsim_file) {
     char buffer[20];
@@ -186,13 +180,11 @@ void get_command(FILE *dumpsim_file) {
     }
 }
 
-
 void cycle() {
     handle_instruction();
     CURRENT_LATCHES = NEXT_LATCHES;
     INSTRUCTION_COUNT++;
 }
-
 
 void go() {
     if (RUN_BIT == false) {
@@ -206,7 +198,6 @@ void go() {
     RUN_BIT = false;
     info("RISCV LC is halted.\n\n");
 }
-
 
 void run(int num_cycles) {
     int i;
@@ -226,7 +217,6 @@ void run(int num_cycles) {
         cycle();
     }
 }
-
 
 /* return the word content start from `start_addr` */
 int read_mem(int start_addr) {
@@ -391,19 +381,17 @@ void handle_and(unsigned int cur_inst) {
 
 // L2-2 Unconditional jumps
 void handle_jalr(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: JALR\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
+    int imm12 = sext(MASK31_20(cur_inst), 12);
+    NEXT_LATCHES.PC = imm12;
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.PC + 4;
+    // Question: why + 4
 }
 
-
+// given?
 void handle_jal(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
     unsigned int rd = MASK11_7(cur_inst);
+    // Question: use of \ //
     int imm20= (MASK31(cur_inst) << 20) + \
         (MASK19_12(cur_inst) << 12) + \
         (MASK20(cur_inst) << 11) + \
@@ -418,7 +406,8 @@ void handle_jal(unsigned int cur_inst) {
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.PC + 4;
 }
 
-
+// 2-2 Conditional Branches
+// given
 void handle_beq(unsigned int cur_inst) {
     unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
     int imm12 = (MASK31(cur_inst) << 12) + \
@@ -429,38 +418,39 @@ void handle_beq(unsigned int cur_inst) {
         NEXT_LATCHES.PC = sext(imm12, 12);
 }
 
-
 void handle_bne(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: BNE\n");
-    exit(EXIT_FAILURE);
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    int imm12 = (MASK31(cur_inst) << 12) + \
+            (MASK7(cur_inst) << 11) + \
+            (MASK30_25(cur_inst) << 5) + \
+            (MASK11_8(cur_inst) << 1);
+    if (CURRENT_LATCHES.REGS[rs1] != CURRENT_LATCHES.REGS[rs2])
+        NEXT_LATCHES.PC = sext(imm12, 12);
 }
-
 
 void handle_blt(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: BLT\n");
-    exit(EXIT_FAILURE);
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    int imm12 = (MASK31(cur_inst) << 12) + \
+            (MASK7(cur_inst) << 11) + \
+            (MASK30_25(cur_inst) << 5) + \
+            (MASK11_8(cur_inst) << 1);
+    if (CURRENT_LATCHES.REGS[rs1] < CURRENT_LATCHES.REGS[rs2])
+        NEXT_LATCHES.PC = sext(imm12, 12);
 }
-
 
 void handle_bge(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: BGE\n");
-    exit(EXIT_FAILURE);
+    unsigned int rs1 = MASK19_15(cur_inst), rs2 = MASK24_20(cur_inst);
+    int imm12 = (MASK31(cur_inst) << 12) + \
+            (MASK7(cur_inst) << 11) + \
+            (MASK30_25(cur_inst) << 5) + \
+            (MASK11_8(cur_inst) << 1);
+    if (CURRENT_LATCHES.REGS[rs1] >= CURRENT_LATCHES.REGS[rs2])
+        NEXT_LATCHES.PC = sext(imm12, 12);
 }
 
-
+// 2-2 Load and Store Instructions
+// given?
 void handle_lb(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
     NEXT_LATCHES.REGS[rd] = sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 8);
