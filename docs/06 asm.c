@@ -198,6 +198,7 @@ int inst_to_binary(
 	int binary = 0;
 
 	// Integer Register-Immediate Instructions
+    // Case given
 	if (is_opcode(opcode) == ADDI) {
 		binary = (0x04 << 2) + 0x03;
 		binary += (reg_to_num(arg1, line_no) << 7);
@@ -277,6 +278,7 @@ int inst_to_binary(
 	}
 
 	// Integer Register-Register Operations
+    // Case
 	else if (is_opcode(opcode) == ADD) {
 		binary = (0x0C << 2) + 0x03;
 		binary += (reg_to_num(arg1, line_no) << 7);

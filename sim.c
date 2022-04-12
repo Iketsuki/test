@@ -10,7 +10,7 @@
 
 
 #include "sim.h"
-
+#define DEBUG
 
 void help() {
     printf("--------------------- RISCV LC SIM Help ----------------------\n");
@@ -546,6 +546,10 @@ void handle_instruction() {
     unsigned int opcode = MASK6_0(cur_inst), funct3 = MASK14_12(cur_inst);
     info("cur_inst = 0x%08x\n", cur_inst);
 
+    #ifdef DEBUG
+        printf("[DEBUG] opcode: 0x%08x\t|funct3: %d\n", opcode, funct3);
+    #endif
+
 	CURRENT_LATCHES.REGS[0] = 0;
     NEXT_LATCHES = CURRENT_LATCHES;
     NEXT_LATCHES.PC = CURRENT_LATCHES.PC + 4;
@@ -557,6 +561,7 @@ void handle_instruction() {
              * Integer Register-Immediate Instructions
              */
             switch(funct3) {
+
                     case 0:
                         handle_addi(cur_inst);
                         break;
@@ -594,6 +599,131 @@ void handle_instruction() {
         /*
          * Lab2-2 assignment: Decode other types of RV32I instructions
          */
+        case (0x0D << 2) + 0x03:
+            handle_lui(cur_inst);
+            break;
+
+        case (0x19 << 2) + 0x03:
+            /*
+             * Integer Register-Register Operations
+             */
+            switch(funct3) {
+                case 0:
+                    if (MASK31_25(cur_inst) == 0)
+                        handle_add(cur_inst);
+                    else
+                        handle_sub(cur_inst);
+                    break;
+
+                case 1:
+                    handle_sll(cur_inst);
+                    break;
+                case 4:
+                    handle_xor(cur_inst);
+                    break;
+                case 5:
+                    if (MASK31_25(cur_inst) == 0)
+                        handle_srl(cur_inst);
+                    else
+                        handle_sra(cur_inst);
+                    break;
+                case 6:
+                    handle_or(cur_inst);
+                    break;
+                case 7:
+                    handle_and(cur_inst);
+                    break;
+                default:
+                    error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            }
+            break;
+
+        // Unconditional Jumps
+        case (0x19 << 2) + 0x03:
+            /*
+             * Handle JALR
+             */
+            if (funct3 == 0)
+                handle_jalr(cur_inst);
+            else
+                error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            break;
+
+        case (0x1b << 2) + 0x03:
+            /*
+             * Handle JAL
+             */
+            handle_jal(cur_inst);
+            //error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            break;
+
+        case (0x18 << 2) + 0x03:
+            /*
+             * Conditional Branches
+             */
+            switch(funct3) {
+
+                case 0:
+                    handle_beq(cur_inst);
+                    break;
+                case 1:
+                    handle_bne(cur_inst);
+                    break;
+                case 4:
+                    handle_blt(cur_inst);
+                    break;
+                case 5:
+                    handle_bge(cur_inst);
+                    break;
+
+                default:
+                    error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            }
+            break;
+
+            // Load and Store Instructions
+        case 0x03:
+            /*
+             * Load
+             */
+            switch(funct3) {
+
+                case 0:
+                    handle_lb(cur_inst);
+                    break;
+                case 1:
+                    handle_lh(cur_inst);
+                    break;
+                case 2:
+                    handle_lw(cur_inst);
+                    break;
+
+                default:
+                    error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            }
+            break;
+
+        case (0x08 << 2) + 0x03:
+            /*
+             * Save
+             */
+            switch(funct3) {
+
+                case 0:
+                    handle_sb(cur_inst);
+                    break;
+                case 1:
+                    handle_sh(cur_inst);
+                    break;
+                case 2:
+                    handle_sw(cur_inst);
+                    break;
+
+                default:
+                    error("unknown opcode 0x%08x is captured.\n", cur_inst);
+            }
+            break;
+
         default:
             error("unknown instruction 0x%08x is captured.\n", cur_inst);
     }
