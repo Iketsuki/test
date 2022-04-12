@@ -283,7 +283,7 @@ void handle_srai(unsigned int cur_inst) {
     int imm12 = sext(MASK31_20(cur_inst), 12);
     //Question: handle sign bit!
     for(int i = 0; i < imm12; i++){
-        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0){
+        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0)){
             NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
             NEXT_LATCHES.REGS[rd] += (1 << 31);
         }
@@ -307,7 +307,7 @@ void handle_andi(unsigned int cur_inst) {
 
 void handle_lui(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst);
-    int imm20 = MASK31_12(cur_inst)
+    int imm20 = MASK31_12(cur_inst);
     NEXT_LATCHES.REGS[rd] = imm20 << 12;
 }
 
@@ -355,7 +355,7 @@ void handle_sra(unsigned int cur_inst) {
             rs2 = MASK24_20(cur_inst);
     // copy from srai
     for(int i = 0; i < CURRENT_LATCHES.REGS[rs2]; i++){
-        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0){
+        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0)){
             NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
             NEXT_LATCHES.REGS[rd] += (1 << 31);
         }
@@ -586,7 +586,7 @@ void handle_instruction() {
             handle_lui(cur_inst);
             break;
 
-        case (0x19 << 2) + 0x03:
+        case (0x0C << 2) + 0x03:
             /*
              * Integer Register-Register Operations
              */
