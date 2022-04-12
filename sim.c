@@ -493,7 +493,9 @@ void handle_lh(unsigned int cur_inst) {
     int w = 16;
     NEXT_LATCHES.REGS[rd] = 0;
     for(int i = 0; i < w / 8; i++){
-        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), w) << (8 * i);
+        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12)
+                                                     + CURRENT_LATCHES.REGS[rs1]
+                                                     + i]), w) << (8 * i);
     }
 }
 // T: LW check again
@@ -507,7 +509,9 @@ void handle_lw(unsigned int cur_inst) {
     int w = 32;
     NEXT_LATCHES.REGS[rd] = 0;
     for(int i = 0; i < w / 8; i++){
-        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), w) << (8 * i);
+        NEXT_LATCHES.REGS[rd] += sext(MASK7_0(MEMORY[sext(imm12, 12)
+                                                     + CURRENT_LATCHES.REGS[rs1]
+                                                     + i]), w) << (8 * i);
     }
 }
 
