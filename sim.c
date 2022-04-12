@@ -330,71 +330,66 @@ void handle_add(unsigned int cur_inst) {
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] + CURRENT_LATCHES.REGS[rs2];
 }
 
+// copy same logic from RI part
 void handle_sub(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
     unsigned int rd = MASK11_7(cur_inst),
         rs1 = MASK19_15(cur_inst),
         rs2 = MASK24_20(cur_inst);
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] - CURRENT_LATCHES.REGS[rs2];
 }
 
-
 void handle_sll(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: SUB\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] << CURRENT_LATCHES.REGS[rs2];
 }
-
 
 void handle_xor(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: XOR\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] ^ CURRENT_LATCHES.REGS[rs2];
 }
-
 
 void handle_srl(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: SRL\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> CURRENT_LATCHES.REGS[rs2];
 }
-
 
 void handle_sra(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: SRA\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    // copy from srai
+    for(int i = 0; i < CURRENT_LATCHES.REGS[rs2]; i++){
+        if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0){
+            NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
+            NEXT_LATCHES.REGS[rd] += (1 << 31);
+        }
+                else{
+            NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
+        }
+    }
 }
-
 
 void handle_or(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: OR\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] | CURRENT_LATCHES.REGS[rs2];
 }
-
 
 void handle_and(unsigned int cur_inst) {
-    /*
-     * Lab2-2 assignment
-     */
-    warn("Lab2-2 assignment: AND\n");
-    exit(EXIT_FAILURE);
+    unsigned int rd = MASK11_7(cur_inst),
+            rs1 = MASK19_15(cur_inst),
+            rs2 = MASK24_20(cur_inst);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] & CURRENT_LATCHES.REGS[rs2];
 }
 
-
+// L2-2 Unconditional jumps
 void handle_jalr(unsigned int cur_inst) {
     /*
      * Lab2-2 assignment
