@@ -278,8 +278,8 @@ void handle_addi(unsigned int cur_inst) {
 
 void handle_slli(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
-    int imm12 = sext(MASK31_20(cur_inst), 12);
-    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] << imm12;
+    int shamt = sext(MASK24_20(cur_inst), 5);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] << shamt;
 }
 
 void handle_xori(unsigned int cur_inst) {
@@ -291,16 +291,16 @@ void handle_xori(unsigned int cur_inst) {
 
 void handle_srli(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
-    int imm12 = sext(MASK31_20(cur_inst), 12);
-    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> imm12;
+    int shamt = sext(MASK24_20(cur_inst), 5);
+    NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> shamt;
 }
 
 
 void handle_srai(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
-    int imm12 = sext(MASK31_20(cur_inst), 12);
+    int shamt = sext(MASK24_20(cur_inst), 5);
     //Question: handle sign bit!
-    for(int i = 0; i < imm12; i++){
+    for(int i = 0; i < shamt; i++){
         if((MASK31(CURRENT_LATCHES.REGS[rs1]) > 0)){
             NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] >> 1;
             NEXT_LATCHES.REGS[rd] += (1 << 31);
@@ -322,7 +322,7 @@ void handle_andi(unsigned int cur_inst) {
     int imm12 = sext(MASK31_20(cur_inst), 12);
     NEXT_LATCHES.REGS[rd] = CURRENT_LATCHES.REGS[rs1] & imm12;
 }
-
+// TODO: LA LUI, check again
 void handle_lui(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst);
     int imm20 = sext(MASK31_12(cur_inst), 20);
@@ -484,7 +484,7 @@ void handle_lh(unsigned int cur_inst) {
     int imm12 = MASK31_20(cur_inst);
     NEXT_LATCHES.REGS[rd] = sext(MASK15_0(MEMORY[sext(imm12, 12) + CURRENT_LATCHES.REGS[rs1]]), 16);
 }
-
+// TODO: LW check again
 void handle_lw(unsigned int cur_inst) {
     unsigned int rd = MASK11_7(cur_inst), rs1 = MASK19_15(cur_inst);
     int imm12 = MASK31_20(cur_inst);
