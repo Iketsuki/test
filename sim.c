@@ -10,7 +10,7 @@
 
 
 #include "sim.h"
-#define DEBUG
+//#define DEBUG
 
 void help() {
     printf("--------------------- RISCV LC SIM Help ----------------------\n");
